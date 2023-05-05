@@ -1,0 +1,1759 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>Trusted Digital Web - Data Registry</title>
+
+    <script src="/js/jquery.min.js"></script>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="/css/bootstrap-theme.min.css" rel="stylesheet">-->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/Chart.min.js"></script>
+
+    <link href="/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/css/main.css" rel="stylesheet" />
+    <script src="/js/common.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/zone.js"></script>
+    <script src="/js/dhcp.js"></script>
+</head>
+<body>
+    <div id="header">
+        <div id="mnuUser" class="menu dropdown" style="display: none;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="menu-title">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <span id="mnuUserDisplayName"></span>
+                    <span class="caret"></span>
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" onclick="return resetChangePasswordModal();" data-toggle="modal" data-target="#modalChangePassword">Change Password</a></li>
+                <li><a href="#" onclick="return logout();">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="container">
+            <div class="AlertPlaceholder"></div>
+
+            <div id="pageLogin" class="pageLogin">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Universal DID Data Service</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="txtUser" class="col-sm-3 control-label">Username</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="txtUser" placeholder="username">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="txtPass" class="col-sm-3 control-label">Password</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" id="txtPass" placeholder="password">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0px;">
+                                <div class="col-sm-offset-3 col-sm-4">
+                                    <button id="btnLogin" type="submit" class="btn btn-primary" data-loading-text="Working..." onclick="return login();">Login</button>
+                                </div>
+                                <div class="col-sm-4" style="padding: 6px; text-align: right;">
+                                    <a href="#" data-toggle="modal" data-target="#modalForgotPassword">Forgot Password?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pageMain" class="page">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="height: 38px;">
+                        <div style="float: left;">
+                            <h3 class="panel-title">Universal DID Data Service<span id="lblServerDomain"></span></h3>
+                        </div>
+                        <div style="float: right;">
+                            <a href="" target="_blank" id="lnkNewVersionAvailable" style="display: none; color: red !important;">New Version Available!</a>
+                        </div>
+                    </div>
+
+                    <div class="panel-body" style="min-height: 500px;">
+
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li id="mainPanelTabListDashboard" role="presentation" class="active"><a href="#mainPanelTabPaneDashboard" aria-controls="mainPanelTabPaneDashboard" role="tab" data-toggle="tab" onclick="refreshDashboard();">Dashboard</a></li>
+                                <li id="mainPanelTabListZones" role="presentation"><a href="#mainPanelTabPaneZones" aria-controls="mainPanelTabPaneZones" role="tab" data-toggle="tab" onclick="refreshZones(true);">Zones</a></li>
+                                <li id="mainPanelTabListCachedZones" role="presentation"><a href="#mainPanelTabPaneCachedZones" aria-controls="mainPanelTabPaneCachedZones" role="tab" data-toggle="tab">Cache</a></li>
+                                <li id="mainPanelTabListAllowedZones" role="presentation"><a href="#mainPanelTabPaneAllowedZones" aria-controls="mainPanelTabPaneAllowedZones" role="tab" data-toggle="tab">Allowed Zones</a></li>
+                                <li id="mainPanelTabListBlockedZones" role="presentation"><a href="#mainPanelTabPaneBlockedZones" aria-controls="mainPanelTabPaneBlockedZones" role="tab" data-toggle="tab">Blocked Zones</a></li>
+                                <li id="mainPanelTabListDnsClient" role="presentation"><a href="#mainPanelTabPaneDnsClient" aria-controls="mainPanelTabPaneDnsClient" role="tab" data-toggle="tab">Query by UDID</a></li>
+                                <li id="mainPanelTabListSettings" role="presentation"><a href="#mainPanelTabPaneSettings" aria-controls="mainPanelTabPaneSettings" role="tab" data-toggle="tab" onclick="loadDnsSettings();">Settings</a></li>
+                                <li id="mainPanelTabListDhcp" role="presentation"><a href="#mainPanelTabPaneDhcp" aria-controls="mainPanelTabPaneDhcp" role="tab" data-toggle="tab" onclick="refreshDhcpTab();">DHCP</a></li>
+                                <li id="mainPanelTabListLogs" role="presentation"><a href="#mainPanelTabPaneLogs" aria-controls="mainPanelTabPaneLogs" role="tab" data-toggle="tab" onclick="refreshLogFilesList();">Logs</a></li>
+                                <li id="mainPanelTabListAbout" role="presentation"><a href="#mainPanelTabPaneAbout" aria-controls="mainPanelTabPaneAbout" role="tab" data-toggle="tab">About</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div id="mainPanelTabPaneDashboard" role="tabpanel" class="tab-pane active" style="padding: 10px 0 0 0;">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-default active">
+                                            <input type="radio" name="rdStatType" value="lastHour" autocomplete="off" checked> Last Hour
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="rdStatType" value="lastDay" autocomplete="off"> Last Day
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="rdStatType" value="lastWeek" autocomplete="off"> Last Week
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="rdStatType" value="lastMonth" autocomplete="off"> Last Month
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="rdStatType" value="lastYear" autocomplete="off"> Last Year
+                                        </label>
+                                    </div>
+
+                                    <div id="divDashboardLoader" style="margin-top: 10px; height: 400px;"></div>
+
+                                    <div id="divDashboard" style="display: none;">
+                                        <div class="stats-panel">
+                                            <div class="stats-item total-queries">
+                                                <div class="number" id="divDashboardStatsTotalQueries">100</div>
+                                                <div class="percentage">100%</div>
+                                                <div class="title">Total Queries</div>
+                                            </div>
+
+                                            <div class="stats-item no-error">
+                                                <div class="number" id="divDashboardStatsTotalNoError">70</div>
+                                                <div class="percentage" id="divDashboardStatsTotalNoErrorPercentage">0%</div>
+                                                <div class="title">No Error</div>
+                                            </div>
+
+                                            <div class="stats-item server-failure">
+                                                <div class="number" id="divDashboardStatsTotalServerFailure">5</div>
+                                                <div class="percentage" id="divDashboardStatsTotalServerFailurePercentage">0%</div>
+                                                <div class="title">Server Failure</div>
+                                            </div>
+
+                                            <div class="stats-item name-error">
+                                                <div class="number" id="divDashboardStatsTotalNameError">5</div>
+                                                <div class="percentage" id="divDashboardStatsTotalNameErrorPercentage">0%</div>
+                                                <div class="title">Name Error</div>
+                                            </div>
+
+                                            <div class="stats-item refused">
+                                                <div class="number" id="divDashboardStatsTotalRefused">10</div>
+                                                <div class="percentage" id="divDashboardStatsTotalRefusedPercentage">0%</div>
+                                                <div class="title">Refused</div>
+                                            </div>
+
+                                            <div class="stats-item auth-hit">
+                                                <div class="number" id="divDashboardStatsTotalAuthHit">10</div>
+                                                <div class="percentage" id="divDashboardStatsTotalAuthHitPercentage">0%</div>
+                                                <div class="title">Authoritative</div>
+                                            </div>
+
+                                            <div class="stats-item recursions">
+                                                <div class="number" id="divDashboardStatsTotalRecursions">10</div>
+                                                <div class="percentage" id="divDashboardStatsTotalRecursionsPercentage">0%</div>
+                                                <div class="title">Recursive</div>
+                                            </div>
+
+                                            <div class="stats-item cache-hit">
+                                                <div class="number" id="divDashboardStatsTotalCacheHit">10</div>
+                                                <div class="percentage" id="divDashboardStatsTotalCacheHitPercentage">0%</div>
+                                                <div class="title">Cached</div>
+                                            </div>
+
+                                            <div class="stats-item blocked">
+                                                <div class="number" id="divDashboardStatsTotalBlocked">10</div>
+                                                <div class="percentage" id="divDashboardStatsTotalBlockedPercentage">0%</div>
+                                                <div class="title">Blocked</div>
+                                            </div>
+
+                                            <div class="stats-item clients">
+                                                <div class="number" id="divDashboardStatsTotalClients">10</div>
+                                                <div class="percentage">&nbsp;</div>
+                                                <div class="title">Clients</div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <canvas id="canvasDashboardMain" style="margin: 10px 0 10px 0;"></canvas>
+                                        </div>
+
+                                        <div style="margin-top: 15px;">
+                                            <div style="float: left; width: 50%; padding-right: 7px;">
+                                                <div id="divPieCharts" class="panel panel-default" style="margin-bottom: 0px;">
+                                                    <div class="panel-body">
+                                                        <div class="zone-stats-panel">
+                                                            <div class="stats-item allowed-zones">
+                                                                <div class="number" id="divDashboardStatsAllowedZones">10</div>
+                                                                <div class="title">Zones Allowed</div>
+                                                            </div>
+
+                                                            <div class="stats-item blocked-zones">
+                                                                <div class="number" id="divDashboardStatsBlockedZones">10</div>
+                                                                <div class="title">Zones Blocked</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div style="margin-bottom: 20px;">
+                                                            <canvas id="canvasDashboardPie"></canvas>
+                                                        </div>
+
+                                                        <div>
+                                                            <canvas id="canvasDashboardPie2"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="float: right; width: 50%; padding-left: 7px;">
+                                                <div id="divTopClients" class="panel panel-default" style="margin-bottom: 0px;">
+                                                    <div class="panel-heading">Top Clients</div>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Client</th>
+                                                                <th>Queries</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tableTopClients">
+                                                            <tr>
+                                                                <td>127.0.0.1</td>
+                                                                <td>100</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>::1</td>
+                                                                <td>10</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div style="clear: both;"></div>
+                                        </div>
+
+                                        <div style="margin-top: 15px;">
+                                            <div style="float: left; width: 50%; padding-right: 7px;">
+                                                <div class="panel panel-default" style="margin-bottom: 0px;">
+                                                    <div class="panel-heading">Top Domains</div>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Domain</th>
+                                                                <th>Hits</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tableTopDomains">
+                                                            <tr>
+                                                                <td>example.com</td>
+                                                                <td>10</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div style="float: right; width: 50%; padding-left: 7px;">
+                                                <div class="panel panel-default" style="margin-bottom: 0px;">
+                                                    <div class="panel-heading">Top Blocked Domains</div>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Domain</th>
+                                                                <th>Hits</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tableTopBlockedDomains">
+                                                            <tr>
+                                                                <td>blocked.example.com</td>
+                                                                <td>10</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mainPanelTabPaneZones" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+                                    <div id="divViewZonesLoader" style=" display: none; margin-top: 10px; height: 400px;"></div>
+
+                                    <div id="divViewZones" style="margin-top: 10px;">
+                                        <div>
+                                            <div style="float: right;">
+                                                <button type="button" class="btn btn-primary" onclick="showAddZoneModal();">Add Zone</button>
+                                                <button type="button" class="btn btn-primary" onclick="showAddDIDMethodModal();">Add DID Method</button>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+
+                                        <table id="tableZones" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Zone (DID Method)</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableZonesBody">
+                                                <tr>
+                                                    <td>localhost</td>
+                                                    <td>Edit Disable Delete</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot id="tableZonesFooter">
+                                                <tr><td colspan="2"><b>Total Records: 1</b></td></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                    <div id="divEditZone" style="display: none;">
+                                        <ul class="pager" style="margin: 0px;">
+                                            <li class="previous"><a href="#" onclick="refreshZones(); return false;"><span aria-hidden="true">&larr;</span> Back</a></li>
+                                        </ul>
+
+                                        <div style="padding: 10px 0px;">
+                                            <div style="float: left;">
+                                                <h3 id="titleEditZone" style="margin: 4px 0;">example.com</h3>
+                                            </div>
+                                            <div style="float: right; padding: 2px 0px;">
+                                                <button type="button" class="btn btn-primary" onclick="showAddRecordModal();">Add Record</button>
+                                                <button type="button" class="btn btn-primary" onclick="exportZone();">Export Zone</button>
+                                                <button type="button" class="btn btn-primary" onclick="importZone();">Import Zone</button>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+
+                                        <table id="tableEditZone" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th onclick="sortTable('tableEditZoneBody', 0);">Subject ID</th>
+                                                    <th onclick="sortTable('tableEditZoneBody', 1);">Type</th>
+                                                    <th onclick="sortTable('tableEditZoneBody', 2);">TTL</th>
+                                                    <th onclick="sortTable('tableEditZoneBody', 3);">Data</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableEditZoneBody">
+                                                <tr>
+                                                    <td>@</td>
+                                                    <td>A</td>
+                                                    <td>3600</td>
+                                                    <td>127.0.0.1</td>
+                                                    <td>Edit Disable Delete</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot id="tableEditZoneFooter">
+                                                <tr><td><b>Total Records: 1</b></td></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div id="mainPanelTabPaneCachedZones" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <div class="well well-sm zone-list-pane">
+                                        <form class="form-inline">
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="text" class="form-control" style="width: inherit;" id="txtCacheZone" placeholder="example.com">
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="btnBrowseCacheZone" type="submit" class="btn btn-primary" data-loading-text="Browse" onclick="return refreshCachedZonesList($('#txtCacheZone').val());">Browse</button>
+                                            </div>
+                                        </form>
+
+                                        <div id="lstCachedZones" class="zones">
+                                            <div class="zone"><a href="#" onclick="return refreshCachedZonesList('technitium.com');">technitium.com</a></div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divCachedZoneViewer" class="zone-viewer-pane">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" style="height: 36px; padding: 4px 6px;">
+                                                <div id="txtCachedZoneViewerTitle" style="float: left; padding: 4px;">technitium.com</div>
+                                                <div style="float: right;">
+                                                    <button id="btnDeleteCachedZone" type="button" class="btn btn-danger" data-loading-text="Delete" onclick="return deleteCachedZone();" style="font-size: 12px; padding: 4px 6px;">Delete</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <pre id="preCachedZoneViewerBody">
+                                                    
+                                                </pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneAllowedZones" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <div class="well well-sm zone-list-pane">
+                                        <form class="form-inline">
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="text" class="form-control" style="width: inherit;" id="txtAllowZone" placeholder="example.com">
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="btnAllowZone" type="submit" class="btn btn-primary" data-loading-text="Allow" onclick="return allowZone();">Allow</button>
+                                                <button id="btnBrowseAllowZone" type="button" class="btn btn-default" data-loading-text="Browse" onclick="return refreshAllowedZonesList($('#txtAllowZone').val());">Browse</button>
+                                            </div>
+                                        </form>
+
+                                        <div id="lstAllowedZones" class="zones">
+                                            <div class="zone"><a href="#" onclick="return refreshAllowedZonesList('technitium.com');">technitium.com</a></div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divAllowedZoneViewer" class="zone-viewer-pane">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" style="height: 36px; padding: 4px 6px;">
+                                                <div id="txtAllowedZoneViewerTitle" style="float: left; padding: 4px;">technitium.com</div>
+                                                <div style="float: right;">
+                                                    <button id="btnImportAllowedZone" type="button" class="btn btn-default" data-loading-text="Import" onclick="return resetImportAllowedZonesModal();" data-toggle="modal" data-target="#modalImportAllowedZones" style="font-size: 12px; padding: 4px 6px;">Import</button>
+                                                    <button id="btnExportAllowedZone" type="button" class="btn btn-default" data-loading-text="Export" onclick="return exportAllowedZones();" style="font-size: 12px; padding: 4px 6px;">Export</button>
+                                                    <button id="btnDeleteAllowedZone" type="button" class="btn btn-danger" data-loading-text="Delete" onclick="return deleteAllowedZone();" style="font-size: 12px; padding: 4px 6px;">Delete</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <pre id="preAllowedZoneViewerBody">
+                                                    
+                                                </pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneBlockedZones" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <div class="well well-sm zone-list-pane">
+                                        <form class="form-inline">
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="text" class="form-control" style="width: inherit;" id="txtBlockZone" placeholder="example.com">
+                                            </div>
+                                            <div class="form-group">
+                                                <button id="btnCustomBlockZone" type="submit" class="btn btn-primary" data-loading-text="Block" onclick="return customBlockZone();">Block</button>
+                                                <button id="btnBrowseBlockZone" type="button" class="btn btn-default" data-loading-text="Browse" onclick="return refreshBlockedZonesList($('#txtBlockZone').val());">Browse</button>
+                                            </div>
+                                        </form>
+
+                                        <div id="lstBlockedZones" class="zones">
+                                            <div class="zone"><a href="#" onclick="return refreshBlockedZonesList('technitium.com');">technitium.com</a></div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divBlockedZoneViewer" class="zone-viewer-pane">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" style="height: 36px; padding: 4px 6px;">
+                                                <div id="txtBlockedZoneViewerTitle" style="float: left; padding: 4px;">technitium.com</div>
+                                                <div style="float: right;">
+                                                    <button id="btnImportBlockedZone" type="button" class="btn btn-default" data-loading-text="Import" onclick="return resetImportCustomBlockedZonesModal();" data-toggle="modal" data-target="#modalImportCustomBlockedZones" style="font-size: 12px; padding: 4px 6px;">Import</button>
+                                                    <button id="btnExportBlockedZone" type="button" class="btn btn-default" data-loading-text="Export" onclick="return exportCustomBlockedZones();" style="font-size: 12px; padding: 4px 6px;">Export</button>
+                                                    <button id="btnDeleteCustomBlockedZone" type="button" class="btn btn-danger" data-loading-text="Delete" onclick="return deleteCustomBlockedZone();" style="font-size: 12px; padding: 4px 6px;">Delete</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <pre id="preBlockedZoneViewerBody">
+                                                    
+                                                </pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneDnsClient" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <form class="form-inline well" style="padding-bottom: 6px;">
+                                        <div class="form-group">
+                                            <label for="txtDnsClientNameServer">Server</label>
+                                            <div class="input-group dropdown">
+                                                <input type="text" class="form-control dropdown-toggle" style="min-width: 250px;" id="txtDnsClientNameServer" value="This Server (this-server)">
+                                                <ul class="dropdown-menu" id="optDnsClientNameServers">
+                                                    <li><a href="#">This Server (this-server)</a></li>
+                                                    <li><a href="#">Recursive Query (recursive-resolver)</a></li>
+                                                    <li><a href="#">Cloudflare (1.1.1.1)</a></li>
+                                                    <li><a href="#">Cloudflare (1.0.0.1)</a></li>
+                                                    <li><a href="#">Cloudflare ([2606:4700:4700::1111])</a></li>
+                                                    <li><a href="#">Cloudflare ([2606:4700:4700::1001])</a></li>
+                                                    <li><a href="#">Cloudflare TLS (cloudflare-dns.com (1.1.1.1:853))</a></li>
+                                                    <li><a href="#">Cloudflare TLS (cloudflare-dns.com (1.0.0.1:853))</a></li>
+                                                    <li><a href="#">Cloudflare TLS (cloudflare-dns.com ([2606:4700:4700::1111]:853))</a></li>
+                                                    <li><a href="#">Cloudflare TLS (cloudflare-dns.com ([2606:4700:4700::1001]:853))</a></li>
+                                                    <li><a href="#">Cloudflare HTTPS (https://cloudflare-dns.com/dns-query)</a></li>
+                                                    <li><a href="#">Cloudflare HTTPS-JSON (https://cloudflare-dns.com/dns-query)</a></li>
+                                                    <li><a href="#">Google (8.8.8.8)</a></li>
+                                                    <li><a href="#">Google (8.8.4.4)</a></li>
+                                                    <li><a href="#">Google ([2001:4860:4860::8888])</a></li>
+                                                    <li><a href="#">Google ([2001:4860:4860::8844])</a></li>
+                                                    <li><a href="#">Google TLS (dns.google (8.8.8.8:853))</a></li>
+                                                    <li><a href="#">Google TLS (dns.google (8.8.4.4:853))</a></li>
+                                                    <li><a href="#">Google TLS (dns.google ([2001:4860:4860::8888]:853))</a></li>
+                                                    <li><a href="#">Google TLS (dns.google ([2001:4860:4860::8844]:853))</a></li>
+                                                    <li><a href="#">Google HTTPS (https://dns.google/dns-query)</a></li>
+                                                    <li><a href="#">Google HTTPS-JSON (https://dns.google/resolve)</a></li>
+                                                    <li><a href="#">Quad9 Secure (9.9.9.9)</a></li>
+                                                    <li><a href="#">Quad9 Secure ([2620:fe::fe])</a></li>
+                                                    <li><a href="#">Quad9 Secure TLS (dns.quad9.net (9.9.9.9:853))</a></li>
+                                                    <li><a href="#">Quad9 Secure TLS (dns.quad9.net ([2620:fe::fe]:853))</a></li>
+                                                    <li><a href="#">Quad9 Secure HTTPS (https://dns.quad9.net/dns-query)</a></li>
+                                                    <li><a href="#">Quad9 Unsecure (9.9.9.10)</a></li>
+                                                    <li><a href="#">Quad9 Unsecure ([2620:fe::10])</a></li>
+                                                    <li><a href="#">Quad9 Unsecure HTTPS (https://dns10.quad9.net/dns-query)</a></li>
+                                                    <li><a href="#">OpenDNS (208.67.222.222)</a></li>
+                                                    <li><a href="#">OpenDNS (208.67.220.220)</a></li>
+                                                    <li><a href="#">OpenDNS ([2620:0:ccc::2])</a></li>
+                                                    <li><a href="#">OpenDNS ([2620:0:ccd::2])</a></li>
+                                                    <li><a href="#">Level3 (4.2.2.1)</a></li>
+                                                    <li><a href="#">Level3 (4.2.2.2)</a></li>
+                                                    <li><a href="#">Ultra (156.154.70.1)</a></li>
+                                                    <li><a href="#">Ultra (156.154.71.1)</a></li>
+                                                    <li><a href="#">Dyn (216.146.35.35)</a></li>
+                                                    <li><a href="#">Dyn (216.146.36.36)</a></li>
+                                                    <li><a href="#">a.root-servers.net</a></li>
+                                                    <li><a href="#">b.root-servers.net</a></li>
+                                                    <li><a href="#">c.root-servers.net</a></li>
+                                                    <li><a href="#">d.root-servers.net</a></li>
+                                                    <li><a href="#">e.root-servers.net</a></li>
+                                                    <li><a href="#">f.root-servers.net</a></li>
+                                                    <li><a href="#">g.root-servers.net</a></li>
+                                                    <li><a href="#">h.root-servers.net</a></li>
+                                                    <li><a href="#">i.root-servers.net</a></li>
+                                                    <li><a href="#">j.root-servers.net</a></li>
+                                                    <li><a href="#">k.root-servers.net</a></li>
+                                                    <li><a href="#">l.root-servers.net</a></li>
+                                                    <li><a href="#">m.root-servers.net</a></li>
+                                                </ul>
+                                                <span role="button" class="input-group-addon dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="txtDnsClientDomain">Domain</label>
+                                            <input type="text" class="form-control" style="min-width: 280px;" id="txtDnsClientDomain" placeholder="example.com">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="optDnsClientType">Type</label>
+                                            <select class="form-control" id="optDnsClientType">
+                                                <option>A</option>
+                                                <option>NS</option>
+                                                <option>CNAME</option>
+                                                <option>SOA</option>
+                                                <option>PTR</option>
+                                                <option>MX</option>
+                                                <option>TXT</option>
+                                                <option>AAAA</option>
+                                                <option>SRV</option>
+                                                <option>CAA</option>
+                                                <option>ANY</option>
+                                                <!-- mwh -->
+                                                <option>DIDID</option>
+                                                <option>DIDCTX</option>
+                                                <option>DIDTXT</option>
+                                                <option>DIDSVC</option>
+                                                <option>DIDSUBSIG</option>
+                                                <option>DIDPUBK</option>
+                                                <option>DIDATHN</option>
+                                                <option>DIDEXTDAT</option>
+                                                <option>UUBLAddress</option>
+
+                                                <option>DIDDOC</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="optDnsClientProtocol">Protocol</label>
+                                            <select class="form-control" id="optDnsClientProtocol">
+                                                <option>UDP</option>
+                                                <option>TCP</option>
+                                                <option>TLS</option>
+                                                <option value="Https">HTTPS</option>
+                                                <option value="HttpsJson">HTTPS (JSON)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" id="btnDnsClientResolve" data-loading-text="Resolving..." onclick="return resolveQuery();" style="margin-right: 6px;">Resolve</button>
+                                            <button type="button" class="btn btn-warning" id="btnDnsClientImport" data-loading-text="Importing..." onclick="return resolveQuery(true);">Import</button>
+                                        </div>
+                                    </form>
+
+                                    <div id="divDnsClientLoader" style="margin-top: 20px; height: 300px;"></div>
+                                    <pre id="preDnsClientOutput" style="display: none;"></pre>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneSettings" role="tabpanel" class="tab-pane">
+
+                                    <div id="divDnsSettingsLoader" style="margin-top: 10px; height: 400px;"></div>
+
+                                    <div id="divDnsSettings" style="display: none;">
+                                        <form style="margin-top: 10px;" onsubmit="return false;">
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="txtServerDomain" class="col-sm-3 control-label">DNS Server Domain</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtServerDomain" placeholder="Domain Name">
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The primary domain name used by this DNS Server to identify itself.</div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtdnsServerLocalAddresses" class="col-sm-3 control-label">DNS Server Local Addresses</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea id="txtdnsServerLocalAddresses" class="form-control" rows="3"></textarea>
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Local addresses are the network interface IP addresses you want the DNS Server to listen for requests.</div>
+                                                </div>
+
+                                                <div>To apply DNS Server local address changes, you will need to manually restart the main service.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="txtWebServicePort" class="col-sm-3 control-label">Web Service Port</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control" id="txtWebServicePort" placeholder="Web Service Port" style="width: 100px;">
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Specify the TCP port number for this web console.</div>
+                                                </div>
+
+                                                <div>To apply web service port changes, you will need to manually restart the main service.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Optional DNS Server Protocols</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkEnableDnsOverHttp" type="checkbox"> Enable DNS-over-HTTP
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable this option to accept DNS-over-HTTP requests for both wire and json response formats. It must be used with a TLS terminating reverse proxy like nginx and will work only on private networks.</div>
+
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkEnableDnsOverTls" type="checkbox"> Enable DNS-over-TLS
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable this option to accept DNS-over-TLS requests.</div>
+
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkEnableDnsOverHttps" type="checkbox"> Enable DNS-over-HTTPS
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable this option to accept DNS-over-HTTPS requests for both wire and json response formats.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtTlsCertificatePath" class="col-sm-3 control-label">TLS Certificate File Path</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtTlsCertificatePath" placeholder="TLS Certificate File Path On Server">
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Specify a PKCS #12 certificate (.pfx) file path on the server. The certificate must contain private key.</div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtTlsCertificatePassword" class="col-sm-3 control-label">TLS Certificate Password</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control" id="txtTlsCertificatePassword" placeholder="TLS Certificate Password">
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Enter the certificate (.pfx) password, if any.</div>
+                                                </div>
+
+                                                <div>To enable or disable these protocols, you will need to manually restart the main service. For DNS-over-HTTP, use <i>http://<span id="lblDoHHost">localhost:8053</span>/dns-query</i> with a TLS terminating reverse proxy like nginx. For DNS-over-TLS, use <i>tls-certificate-domain:853</i> and for DNS-over-HTTPS use <i>https://tls-certificate-domain/dns-query</i> to configure supported DNS clients.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">IPv6 Support</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkPreferIPv6" type="checkbox"> Prefer IPv6
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">DNS Server will use IPv6 for querying whenever possible with this option enabled.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div>Use this option only if this DNS server has native IPv6 Internet access otherwise it will affect performance.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Logging</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkLogQueries" type="checkbox"> Log All Queries
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable this option to log every query received by this DNS Server and the corresponding response answers into the log file.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div>Enabling query logging will significantly increase the log file size. Error and audit logs are enabled by default.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Recursive Resolver</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkAllowRecursion" type="checkbox"> Allow Recursion
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable recursion to allow this DNS Server to resolve any domain name.</div>
+
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input id="chkAllowRecursionOnlyForPrivateNetworks" type="checkbox"> Allow Recursion Only For Private Networks
+                                                            </label>
+                                                        </div>
+                                                        <div style="padding-top: 5px;">Enable this option if you want to support recursion only on private networks. Any recursive request from public network will be refused.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div>Disable recursion if you wish this server to act only as authoritative name server for the configured zones.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="txtCachePrefetchEligibility" class="col-sm-3 control-label">Prefetch Eligibility</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control" id="txtCachePrefetchEligibility" placeholder="eligibility" style="width: 100px; display: inline;">
+                                                        <span>(recommended 2)</span>
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The minimum initial TTL value of a record needed to be eligible for prefetching.</div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtCachePrefetchTrigger" class="col-sm-3 control-label">Prefetch Trigger</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="number" class="form-control" id="txtCachePrefetchTrigger" placeholder="trigger" style="width: 100px; display: inline;">
+                                                        <span>(recommended 9; set 0 to disable prefetching &amp; auto prefetching)</span>
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">A record with TTL value less than trigger value will initiate prefetch operation immediately for itself.</div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtCachePrefetchSampleIntervalInMinutes" class="col-sm-3 control-label">Auto Prefetch Sampling</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control" id="txtCachePrefetchSampleIntervalInMinutes" placeholder="interval" style="width: 100px; display: inline;">
+                                                        <span>minutes (valid range 1-60; default 5)</span>
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The interval to sample eligible domain names from last hour stats for auto prefetch.</div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtCachePrefetchSampleEligibilityHitsPerHour" class="col-sm-3 control-label">Auto Prefetch Eligibility</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control" id="txtCachePrefetchSampleEligibilityHitsPerHour" placeholder="hits" style="width: 100px; display: inline;">
+                                                        <span>hits/hour (default 30)</span>
+                                                    </div>
+                                                    <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Minimum required hits per hour for a domain name to be eligible for auto prefetch.</div>
+                                                </div>
+
+                                                <div>The DNS Server cache auto prefetch option can keep eligible domain names from last hour stats "hot" in cache. Auto prefetch eligibility value can be decided by keeping an eye on the hits shown for last hour on the dashboard. Experiment with auto prefetch sampling interval and eligibility to get best results.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="txtBlockListUrls" class="col-sm-3 control-label">Block List URLs</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea id="txtBlockListUrls" class="form-control" rows="7"></textarea>
+
+                                                        <label for="optQuickBlockList" class="control-label">Quick Add</label>
+                                                        <select id="optQuickBlockList" style="width: 100%;">
+                                                            <option value="blank" selected></option>
+                                                            <option value="none">None</option>
+                                                            <option value="default">Default</option>
+
+                                                            <option id="optCustomLocalBlockList" value="http://localhost:5380/blocklist.txt">Custom Local Block List (http://localhost:5380/blocklist.txt)</option>
+
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts">Steven Black [adware + malware] (https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts">Steven Black [adware + malware + fakenews] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts">Steven Black [adware + malware + gambling] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts">Steven Black [adware + malware + porn] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts">Steven Black [adware + malware + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts">Steven Black [adware + malware + fakenews + gambling] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn/hosts">Steven Black [adware + malware + fakenews + porn] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-social/hosts">Steven Black [adware + malware + fakenews + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts">Steven Black [adware + malware + gambling + porn] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-social/hosts">Steven Black [adware + malware + gambling + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-social/hosts">Steven Black [adware + malware + porn + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts">Steven Black [adware + malware + fakenews + gambling + porn] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts">Steven Black [adware + malware + fakenews + gambling + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn-social/hosts">Steven Black [adware + malware + fakenews + porn + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-porn-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts">Steven Black [adware + malware + gambling + porn + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn-social/hosts)</option>
+                                                            <option value="https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts">Steven Black [adware + malware + fakenews + gambling + porn + social] (https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts)</option>
+
+                                                            <option value="https://mirror1.malwaredomains.com/files/justdomains">Malware Domains (https://mirror1.malwaredomains.com/files/justdomains)</option>
+                                                            <option value="https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist">Zeus Tracker (https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist)</option>
+
+                                                            <option value="https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt">Disconnect.me [tracking] (https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt)</option>
+                                                            <option value="https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt">Disconnect.me [ads] (https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt)</option>
+
+                                                            <option value="https://hosts-file.net/ad_servers.txt">hosts-file.net [ad/tracking] (https://hosts-file.net/ad_servers.txt)</option>
+                                                            <option value="https://hosts-file.net/emd.txt">hosts-file.net [malware] (https://hosts-file.net/emd.txt)</option>
+                                                            <option value="https://hosts-file.net/exp.txt">hosts-file.net [exploit] (https://hosts-file.net/exp.txt)</option>
+                                                            <option value="https://hosts-file.net/fsa.txt">hosts-file.net [fraud] (https://hosts-file.net/fsa.txt)</option>
+                                                            <option value="https://hosts-file.net/grm.txt">hosts-file.net [spam] (https://hosts-file.net/grm.txt)</option>
+                                                            <option value="https://hosts-file.net/hjk.txt">hosts-file.net [hijack] (https://hosts-file.net/hjk.txt)</option>
+                                                            <option value="https://hosts-file.net/mmt.txt">hosts-file.net [misleading marketing] (https://hosts-file.net/mmt.txt)</option>
+                                                            <option value="https://hosts-file.net/pha.txt">hosts-file.net [illegal pharmacy] (https://hosts-file.net/pha.txt)</option>
+                                                            <option value="https://hosts-file.net/psh.txt">hosts-file.net [phishing] (https://hosts-file.net/psh.txt)</option>
+                                                            <option value="https://hosts-file.net/pup.txt">hosts-file.net [potentially unwanted programs] (https://hosts-file.net/pup.txt)</option>
+                                                            <option value="https://hosts-file.net/wrz.txt">hosts-file.net [warez/piracy] (https://hosts-file.net/wrz.txt)</option>
+                                                        </select>
+
+                                                        <div style="margin-top: 10px;">Enter block list URL one below another in the above text field or use the Quick Add list to add known block list URLs.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-top: 10px;">DNS Server will use the data returned by the block list URLs to update the blocked zone automatically every 24 hours. The expected file format is standard <i>hosts</i> file format or plain text file containing list of domains to block.</div>
+                                                <div style="margin-top: 10px;"><a href="https://blog.technitium.com/2018/10/blocking-internet-ads-using-dns-sinkhole.html" target="_blank">Help: Blocking Internet Ads Using DNS Sinkhole</a></div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Network Proxy</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdProxyType" id="rdProxyTypeNone" value="None" checked>
+                                                                No Proxy (default)
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdProxyType" id="rdProxyTypeHttp" value="Http">
+                                                                HTTP Proxy
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdProxyType" id="rdProxyTypeSocks5" value="Socks5">
+                                                                SOCKS5 Proxy
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtProxyAddress" class="col-sm-3 control-label">Proxy Address</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtProxyAddress" placeholder="Proxy Server Address">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtProxyPort" class="col-sm-3 control-label">Proxy Port</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control" id="txtProxyPort" placeholder="Proxy Server Port" style="width: 170px;">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtProxyUsername" class="col-sm-3 control-label">Username</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txtProxyUsername" placeholder="Proxy Server Username">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="txtProxyPassword" class="col-sm-3 control-label">Password</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control" id="txtProxyPassword" placeholder="Proxy Server Password">
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-top: 10px;">When proxy server is configured, DNS Server will use it for all outbound network requests.</div>
+                                            </div>
+
+                                            <div class="well well-sm form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="txtForwarders" class="col-sm-3 control-label">Forwarders</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea id="txtForwarders" class="form-control" rows="3"></textarea>
+
+                                                        <label for="optQuickForwarders" class="control-label">Quick Select</label>
+                                                        <select id="optQuickForwarders" style="width: 100%;">
+                                                            <option value="blank" selected></option>
+                                                            <option value="none">None</option>
+
+                                                            <option value="cloudflare-udp">Cloudflare (DNS-over-UDP)</option>
+                                                            <option value="cloudflare-udp-ipv6">Cloudflare (DNS-over-UDP IPv6)</option>
+                                                            <option value="cloudflare-tcp">Cloudflare (DNS-over-TCP)</option>
+                                                            <option value="cloudflare-tcp-ipv6">Cloudflare (DNS-over-TCP IPv6)</option>
+                                                            <option value="cloudflare-tls">Cloudflare (DNS-over-TLS)</option>
+                                                            <option value="cloudflare-tls-ipv6">Cloudflare (DNS-over-TLS IPv6)</option>
+                                                            <option value="cloudflare-https">Cloudflare (DNS-over-HTTPS)</option>
+                                                            <option value="cloudflare-json">Cloudflare (DNS-over-HTTPS-JSON)</option>
+                                                            <option value="cloudflare-tor">Cloudflare (DNS-over-TOR!)</option>
+
+                                                            <option value="google-udp">Google (DNS-over-UDP)</option>
+                                                            <option value="google-udp-ipv6">Google (DNS-over-UDP IPv6)</option>
+                                                            <option value="google-tcp">Google (DNS-over-TCP)</option>
+                                                            <option value="google-tcp-ipv6">Google (DNS-over-TCP IPv6)</option>
+                                                            <option value="google-tls">Google (DNS-over-TLS)</option>
+                                                            <option value="google-tls-ipv6">Google (DNS-over-TLS IPv6)</option>
+                                                            <option value="google-https">Google (DNS-over-HTTPS)</option>
+                                                            <option value="google-json">Google (DNS-over-HTTPS-JSON)</option>
+
+                                                            <option value="quad9-udp">Quad9 Secure (DNS-over-UDP)</option>
+                                                            <option value="quad9-udp-ipv6">Quad9 Secure (DNS-over-UDP IPv6)</option>
+                                                            <option value="quad9-tcp">Quad9 Secure (DNS-over-TCP)</option>
+                                                            <option value="quad9-tcp-ipv6">Quad9 Secure (DNS-over-TCP IPv6)</option>
+                                                            <option value="quad9-tls">Quad9 Secure (DNS-over-TLS)</option>
+                                                            <option value="quad9-tls-ipv6">Quad9 Secure (DNS-over-TLS IPv6)</option>
+                                                            <option value="quad9-https">Quad9 Secure (DNS-over-HTTPS)</option>
+
+                                                            <option value="opendns-udp">OpenDNS (DNS-over-UDP)</option>
+                                                            <option value="opendns-udp-ipv6">OpenDNS (DNS-over-UDP IPv6)</option>
+                                                            <option value="opendns-tcp">OpenDNS (DNS-over-TCP)</option>
+                                                            <option value="opendns-tcp-ipv6">OpenDNS (DNS-over-TCP IPv6)</option>
+                                                        </select>
+
+                                                        <div style="margin-top: 10px;">Enter forwarder DNS Server IP addresses or URLs one below another in above text field or use the Quick Select list to select desired forwarder.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">Forwarder Protocol</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdForwarderProtocol" id="rdForwarderProtocolUdp" value="Udp" checked>
+                                                                DNS-over-UDP (default)
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdForwarderProtocol" id="rdForwarderProtocolTcp" value="Tcp">
+                                                                DNS-over-TCP
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdForwarderProtocol" id="rdForwarderProtocolTls" value="Tls">
+                                                                DNS-over-TLS
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdForwarderProtocol" id="rdForwarderProtocolHttps" value="Https">
+                                                                DNS-over-HTTPS
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="rdForwarderProtocol" id="rdForwarderProtocolHttpsJson" value="HttpsJson">
+                                                                DNS-over-HTTPS (JSON)
+                                                            </label>
+                                                        </div>
+
+                                                        <div style="margin-top: 10px;">Select a protocol that this DNS server must use to query the forwarders specified above.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-top: 10px;">Forwarders are DNS servers which this DNS Server should use to resolve recursive queries. If no forwarders are configured then this DNS server will use preconfigured ROOT SERVERS to perform recursive resolution.</div>
+                                                <div style="margin-top: 10px;"><a href="https://blog.technitium.com/2018/06/configuring-dns-server-for-privacy.html" target="_blank">Help: Configuring DNS Server For Privacy & Security</a></div>
+                                            </div>
+
+                                            <div class="form-group" style="margin-bottom: 0px;">
+                                                <button id="btnSaveDnsSettings" type="button" class="btn btn-primary" data-loading-text="Saving..." onclick="return saveDnsSettings();">Save Settings</button>
+                                                <button id="btnFlushDnsCache" type="button" class="btn btn-warning" data-loading-text="Flushing..." onclick="return flushDnsCache();" style="margin-left: 6px;">Flush Cache</button>
+                                                <button id="btnFlushAllowedZone" type="button" class="btn btn-warning" data-loading-text="Flushing..." onclick="return flushAllowedZone();" style="margin-left: 6px;">Flush Allowed Zone</button>
+                                                <button id="btnFlushCustomBlockedZone" type="button" class="btn btn-warning" data-loading-text="Flushing..." onclick="return flushCustomBlockedZone();" style="margin-left: 6px;">Flush Custom Blocked Zone</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneDhcp" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li id="dhcpTabListLeases" role="presentation" class="active"><a href="#dhcpTabPaneLeases" aria-controls="dhcpTabPaneLeases" role="tab" data-toggle="tab" onclick="refreshDhcpLeases();">Leases</a></li>
+                                        <li id="dhcpTabListScopes" role="presentation"><a href="#dhcpTabPaneScopes" aria-controls="dhcpTabPaneScopes" role="tab" data-toggle="tab" onclick="refreshDhcpScopes(true);">Scopes</a></li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div id="dhcpTabPaneLeases" class="tab-pane active">
+                                            <div id="divDhcpLeasesLoader" style="margin-top: 10px; height: 350px;"></div>
+
+                                            <div id="divDhcpLeases" style="margin-top: 10px;">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Scope</th>
+                                                            <th>MAC Address</th>
+                                                            <th>IP Address</th>
+                                                            <th></th>
+                                                            <th>Host Name</th>
+                                                            <th>Lease Obtained</th>
+                                                            <th>Lease Expires</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tableDhcpLeasesBody">
+                                                        <tr>
+                                                            <td>Default</td>
+                                                            <td>00-00-00-00-00-00</td>
+                                                            <td>192.168.10.2</td>
+                                                            <td>Dynamic</td>
+                                                            <td>user-pc.local</td>
+                                                            <td>6/14/2019 3:39 PM</td>
+                                                            <td>6/15/2019 3:39 PM</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot id="tableDhcpLeasesFooter">
+                                                        <tr><td><b>Total Leases: 1</b></td></tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div id="dhcpTabPaneScopes" class="tab-pane">
+                                            <div id="divDhcpViewScopesLoader" style="margin-top: 10px; height: 350px;"></div>
+
+                                            <div id="divDhcpViewScopes" style="margin-top: 10px;">
+
+                                                <div style="float: right; padding: 2px 0px;">
+                                                    <button type="button" class="btn btn-primary" onclick="showAddDhcpScope();">Add Scope</button>
+                                                </div>
+                                                <div style="clear: both;"></div>
+
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Scope Range/Subnet Mask</th>
+                                                            <th>Network/Broadcast</th>
+                                                            <th>Interface</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tableDhcpScopesBody">
+                                                        <tr>
+                                                            <td>Default</td>
+                                                            <td>192.168.10.1 - 192.168.10.100</td>
+                                                            <td>192.168.10.0<br />192.168.10.255</td>
+                                                            <td>192.168.10.1</td>
+                                                            <td>Edit Delete</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot id="tableDhcpScopesFooter">
+                                                        <tr><td><b>Total Leases: 1</b></td></tr>
+                                                    </tfoot>
+                                                </table>
+
+                                            </div>
+
+                                            <div id="divDhcpEditScope" style="display: none;">
+                                                <form style="margin-top: 10px; margin-bottom: 0px;" onsubmit="return false;">
+
+                                                    <h4 style="padding: 10px 0px;" id="titleDhcpEditScope">Edit Scope</h4>
+
+                                                    <div class="well well-sm form-horizontal">
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeName" class="col-sm-3 control-label">Name</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeName" data-name="" placeholder="Scope Name">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeStartingAddress" class="col-sm-3 control-label">Starting Address</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeStartingAddress" placeholder="Starting Address">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeEndingAddress" class="col-sm-3 control-label">Ending Address</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeEndingAddress" placeholder="Ending Address">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeSubnetMask" class="col-sm-3 control-label">Subnet Mask</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeSubnetMask" placeholder="Subnet Mask">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeLeaseTimeDays" class="col-sm-3 control-label">Lease Time</label>
+                                                            <div class="col-sm-7">
+                                                                <label for="txtDhcpScopeLeaseTimeDays" class="control-label">Days</label>
+                                                                <input type="number" class="form-control" style="display: inline; width: 80px; margin-right: 15px;" id="txtDhcpScopeLeaseTimeDays" placeholder="Days">
+
+                                                                <label for="txtDhcpScopeLeaseTimeHours" class="control-label">Hours</label>
+                                                                <input type="number" class="form-control" style="display: inline; width: 80px; margin-right: 15px;" id="txtDhcpScopeLeaseTimeHours" placeholder="Hrs">
+
+                                                                <label for="txtDhcpScopeLeaseTimeMinutes" class="control-label">Minutes</label>
+                                                                <input type="number" class="form-control" style="display: inline; width: 80px; margin-right: 15px;" id="txtDhcpScopeLeaseTimeMinutes" placeholder="Mins">
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The duration for which the clients should be leased the IP address.</div>
+                                                        </div>
+
+                                                        <div class="form-group" style="margin-bottom: 0px;">
+                                                            <label for="txtDhcpScopeOfferDelayTime" class="col-sm-3 control-label">Offer Delay Time</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" class="form-control" style="width: 80px; display: inline;" id="txtDhcpScopeOfferDelayTime" placeholder="Delay">
+                                                                <span>(milli seconds)</span>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The time duration that the DHCP server delays sending an DHCPOFFER message.</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="well well-sm form-horizontal">
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeDomainName" class="col-sm-3 control-label">Domain Name</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeDomainName" placeholder="Domain Name">
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The domain name for this network to allow updating DNS forward and reverse records for all clients. Use a domain name that you own or that is not in common use like 'local' so that you don't block out an existing domain name.</div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeDnsTtl" class="col-sm-3 control-label">DNS TTL</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="number" class="form-control" style="width: 100px; display: inline;" id="txtDhcpScopeDnsTtl" placeholder="DNS TTL">
+                                                                <span>(seconds)</span>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The TTL value of the DNS records updated for the above provided domain name.</div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeRouterAddress" class="col-sm-3 control-label">Router Address</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" class="form-control" id="txtDhcpScopeRouterAddress" placeholder="Router Address">
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The default gateway IP address to be used by the clients.</div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeDnsServers" class="col-sm-3 control-label">DNS Servers</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input id="chkUseThisDnsServer" type="checkbox" onclick="$('#txtDhcpScopeDnsServers').prop('disabled', $(this).prop('checked'));"> Use This DNS Server
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px; margin-bottom: 10px;">Enable this option to automatically use this DNS Server.</div>
+                                                            <div class="col-sm-offset-3 col-sm-3">
+                                                                <textarea id="txtDhcpScopeDnsServers" class="form-control" rows="2"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The DNS server IP addresses to be used by the clients.</div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeWinsServers" class="col-sm-3 control-label">WINS Servers</label>
+                                                            <div class="col-sm-3">
+                                                                <textarea id="txtDhcpScopeWinsServers" class="form-control" rows="2"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The NBNS/WINS server IP addresses to be used by the clients.</div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtDhcpScopeNtpServers" class="col-sm-3 control-label">NTP Servers</label>
+                                                            <div class="col-sm-3">
+                                                                <textarea id="txtDhcpScopeNtpServers" class="form-control" rows="2"></textarea>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The Network Time Protocol (NTP) server IP addresses to be used by the clients.</div>
+                                                        </div>
+
+                                                        <div class="form-group" style="margin-bottom: 0px;">
+                                                            <label for="tableDhcpScopeStaticRoutes" class="col-sm-3 control-label">Static Routes</label>
+                                                            <div class="col-sm-7">
+                                                                <table class="table table-hover" style="margin-bottom: 0px;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Destination</th>
+                                                                            <th>Subnet Mask</th>
+                                                                            <th>Router</th>
+                                                                            <th><button type="button" class="btn btn-default" style="padding: 0px 20px;" onclick="addDhcpScopeStaticRouteRow('', '', '');">Add</button></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tableDhcpScopeStaticRoutes"></tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The static routes to be used by the clients for accessing specified destination networks.</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="well well-sm form-horizontal">
+                                                        <div class="form-group">
+                                                            <label for="tableDhcpScopeExclusions" class="col-sm-3 control-label">Exclusions</label>
+                                                            <div class="col-sm-6">
+                                                                <table class="table table-hover" style="margin-bottom: 0px;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Starting Address</th>
+                                                                            <th>Ending Address</th>
+                                                                            <th><button type="button" class="btn btn-default" style="padding: 0px 20px;" onclick="addDhcpScopeExclusionRow('', '');">Add</button></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tableDhcpScopeExclusions"></tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The IP address range that must be excluded or not assigned dynamically to any client by the DHCP server.</div>
+                                                        </div>
+
+                                                        <div class="form-group" style="margin-bottom: 0px;">
+                                                            <label for="tableDhcpScopeReservedLeases" class="col-sm-3 control-label">Reserved Leases</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="checkbox">
+                                                                    <label>
+                                                                        <input id="chkAllowOnlyReservedLeases" type="checkbox"> Allow Only Reserved Lease Allocations
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">Enable this option to stop dynamic IP address allocation and allocate only reserved IP addresses.</div>
+                                                            <div class="col-sm-offset-3 col-sm-7">
+                                                                <table class="table table-hover" style="margin-bottom: 0px;">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Host Name</th>
+                                                                            <th>MAC Address</th>
+                                                                            <th>IP Address</th>
+                                                                            <th><button type="button" class="btn btn-default" style="padding: 0px 20px;" onclick="addDhcpScopeReservedLeaseRow('', '', '');">Add</button></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tableDhcpScopeReservedLeases"></tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-sm-offset-3 col-sm-8" style="padding-top: 5px;">The reserved IP addresses to be assigned to specific clients based on their MAC address.</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group" style="margin-bottom: 0px;">
+                                                        <button type="submit" class="btn btn-primary" style="width: 100px;" id="btnSaveDhcpScope" data-loading-text="Saving..." onclick="saveDhcpScope(); return false;">Save</button>
+                                                        <button type="button" class="btn btn-default" style="width: 100px;" onclick="refreshDhcpScopes();">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="mainPanelTabPaneLogs" role="tabpanel" class="tab-pane" style="padding: 10px 0 0 0;">
+
+                                    <div class="well well-sm log-list-pane">
+                                        <div id="lstLogFiles" class="logs">
+                                            <div class="log"><a href="#" onclick="return viewLog('20171012');">20171012</a></div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divLogViewer" class="log-viewer-pane">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" style="height: 36px; padding: 4px 6px;">
+                                                <div id="txtLogViewerTitle" style="float: left; padding: 4px;">20171012</div>
+                                                <div style="float: right;">
+                                                    <button type="button" class="btn btn-default" data-loading-text="Download" onclick="return downloadLog();" style="font-size: 12px; padding: 4px 6px;">Download</button>
+                                                    <button id="btnDeleteLog" type="button" class="btn btn-danger" data-loading-text="Delete" onclick="return deleteLog();" style="font-size: 12px; padding: 4px 6px;">Delete</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <div id="divLogViewerLoader" style="margin-top: 20px; height: 400px;"></div>
+                                                <pre id="preLogViewerBody" style="display: none; word-wrap: normal; word-break: normal;"></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="mainPanelTabPaneAbout" role="tabpanel" class="tab-pane" style="padding: 40px 0 20px 0;">
+
+                                    <div class="about" style="text-align: center;">
+                                        <img src="/img/logo.png" alt="Technitium Logo" />
+                                        <h1>Technitium DNS Server</h1>
+                                        <p>Version <span id="lblAboutVersion"></span></p>
+                                        <p style="max-width: 800px; margin: 0 auto 10px auto;">
+                                            Copyright (C) 2019  Shreyas Zare (shreyas@technitium.com)<br />
+                                            This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.<br />
+                                        </p>
+                                        <p>Source code available under <a href="https://github.com/TechnitiumSoftware/DnsServer/blob/master/LICENSE" target="_blank">GNU General Public License v3.0</a> on <a href="https://github.com/TechnitiumSoftware/DnsServer" target="_blank"><i class="fa fa-github"></i>&nbsp;GitHub</a></p>
+
+                                        <h3 style="margin-top: 40px;"><a style="color: rgb(51,51,51) !important;" href="https://go.technitium.com/?id=25" target="_blank">Help Topics</a></h3>
+                                        <p>Read the latest <a href="https://go.technitium.com/?id=25" target="_blank">online help topics</a> which contains the DNS Server user manual and covers frequently asked questions.</p>
+
+                                        <h3 style="margin-top: 40px;">Support</h3>
+                                        <p>For support, send an email to <a href="mailto:support@technitium.com" target="_blank">support@technitium.com</a>.</p>
+                                        <p>
+                                            Follow <a href="https://twitter.com/Technitium" target="_blank">@technitium</a> on Twitter.<br />
+                                            Checkout <a href="https://blog.technitium.com/" target="_blank">Technitium Blog</a>.
+                                        </p>
+
+                                        <h3 style="margin-top: 40px;"><a style="color: rgb(51,51,51) !important;" href="https://www.patreon.com/technitium" target="_blank">Become A Patron</a></h3>
+                                        <p>Make contribution to Technitium by becoming a Patron and help making new software, updates, and features possible.</p>
+                                        <p>
+                                            <a href="https://www.patreon.com/technitium" target="_blank">Become A Patron Now!</a>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modalChangePassword" class="modal fade" tabindex="-1" role="dialog">
+        <form class="form-horizontal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Change Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divChangePasswordAlert"></div>
+
+                        <div class="form-group">
+                            <label for="txtChangePasswordUsername" class="col-sm-4 control-label">Username</label>
+                            <div class="col-sm-7">
+                                <input id="txtChangePasswordUsername" type="text" class="form-control" placeholder="username" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtChangePasswordNewPassword" class="col-sm-4 control-label">New Password</label>
+                            <div class="col-sm-7">
+                                <input id="txtChangePasswordNewPassword" type="password" class="form-control" placeholder="new password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtChangePasswordConfirmPassword" class="col-sm-4 control-label">Confirm Password</label>
+                            <div class="col-sm-7">
+                                <input id="txtChangePasswordConfirmPassword" type="password" class="form-control" placeholder="confirm password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnChangePasswordSave" type="submit" class="btn btn-primary" data-loading-text="Saving..." onclick="return changePassword();">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="modalForgotPassword" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Forgot Password?</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Follow these steps to reset 'admin' password:</p>
+                    <ol>
+                        <li>Find the DNS Server config folder and locate the <b>dns.config</b> file. The config folder will be found where the DNS Server is installed.</li>
+                        <li>Rename the <b>dns.config</b> file as <b>reset.config</b></li>
+                        <li>Restart the DNS Server to complete the password reset process.</li>
+                        <li>Just refresh this web page in the web browser to auto login with default credentials and quickly change the password.</li>
+                    </ol>
+                    <p>Note: To reset 'admin' password, you will need file system access on the server running this DNS Server. </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modalAddZone" class="modal fade" tabindex="-1" role="dialog">
+        <form class="form-horizontal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add Zone</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divAddZoneAlert"></div>
+
+                        <div class="form-group">
+                            <label for="txtAddZone" class="col-sm-4 control-label">Zone</label>
+                            <div class="col-sm-7">
+                                <input id="txtAddZone" type="text" class="form-control" placeholder="example.com">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnAddZone" type="submit" class="btn btn-primary" data-loading-text="Adding..." onclick="addZone(); return false;">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="modalAddDIDMethod" class="modal fade" tabindex="-1" role="dialog">
+        <form class="form-horizontal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add DID Method</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divAddDIDMethodAlert"></div>
+
+                        <div class="form-group">
+                            <label for="txtAddDIDMethod" class="col-sm-4 control-label">DID Method</label>
+                            <div class="col-sm-7">
+                                <input id="txtAddDIDMethod" type="text" class="form-control" placeholder="did:example">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnAddDIDMethod" type="submit" class="btn btn-primary" data-loading-text="Adding..." onclick="addDIDMethod(); return false;">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="modalAddEditRecord" class="modal fade" tabindex="-1" role="dialog">
+        <form class="form-horizontal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 id="titleAddEditRecord" class="modal-title">Add Edit Record</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divAddEditRecordAlert"></div>
+
+                        <div id="divAddEditRecordNameOrSubjectDID" class="form-group">
+                            <label id="lblAddEditRecordNameOrSubjectDID" for="txtAddEditRecordNameOrSubjectDID" class="col-sm-4 control-label">Name</label>
+                            <div class="col-sm-7">
+                                <input id="txtAddEditRecordNameOrSubjectDID" type="text" class="form-control" placeholder="@">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="optAddEditRecordType" class="col-sm-4 control-label">Type</label>
+                            <div class="col-sm-7">
+                                <select id="optAddEditRecordType" class="form-control" onchange="modifyAddRecordForm();" style="width: auto;">
+                                    <option>A</option>
+                                    <option>NS</option>
+                                    <option id="optEditRecordTypeSoa">SOA</option>
+                                    <option>CNAME</option>
+                                    <option>PTR</option>
+                                    <option>MX</option>
+                                    <option>TXT</option>
+                                    <option>AAAA</option>
+                                    <option>SRV</option>
+                                    <option>CAA</option>
+                                    <!-- mwh -->
+                                    <option>DIDID</option>
+                                    <option>DIDCTX</option>
+                                    <option>DIDTXT</option>
+                                    <option>DIDSVC</option>
+                                    <option>DIDSUBSIG</option>
+                                    <option>DIDPUBK</option>
+                                    <option>DIDATHN</option>
+                                    <option>DIDEXTDAT</option>
+                                    <option>UUBLAddress</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtAddEditRecordTtl" class="col-sm-4 control-label">TTL</label>
+                            <div class="col-sm-7">
+                                <input id="txtAddEditRecordTtl" type="number" class="form-control" placeholder="3600" style="width: 100px;">
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordTag">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordTagValue" for="txtAddEditRecordTagValue" class="col-sm-4 control-label">Tag</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordTagValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordDID">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordDIDValue" for="txtAddEditRecordDIDValue" class="col-sm-4 control-label">DID</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordDIDValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordType">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordTypeValue" for="txtAddEditRecordTypeValue" class="col-sm-4 control-label">Type</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordTypeValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordPublicKey">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordPublicKeyValue" for="txtAddEditRecordPublicKeyValue" class="col-sm-4 control-label">Public Key</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordPublicKeyValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordControllerDID">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordControllerDIDValue" for="txtAddEditRecordControllerDIDValue" class="col-sm-4 control-label">Controller DID</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordControllerDIDValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordData">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordDataValue" for="txtAddEditRecordDataValue" class="col-sm-4 control-label">Value</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordDataValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordDescription">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordDescriptionValue" for="txtAddEditRecordDescriptionValue" class="col-sm-4 control-label">Description</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordDescriptionValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divAddEditRecordParms">
+                            <div class="form-group">
+                                <label id="lblAddEditRecordParmsValue" for="txtAddEditRecordParmsValue" class="col-sm-4 control-label">Parameters</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordParmsValue" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divEditRecordDataSoa" style="display: none;">
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaMasterNameServer" class="col-sm-4 control-label">Master Name Server</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaMasterNameServer" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaResponsiblePerson" class="col-sm-4 control-label">Responsible Person</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaResponsiblePerson" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaSerial" class="col-sm-4 control-label">Serial</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaSerial" type="number" class="form-control" style="width: 150px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaRefresh" class="col-sm-4 control-label">Refresh</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaRefresh" type="number" class="form-control" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaRetry" class="col-sm-4 control-label">Retry</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaRetry" type="number" class="form-control" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaExpire" class="col-sm-4 control-label">Expire</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaExpire" type="number" class="form-control" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtEditRecordDataSoaMinimum" class="col-sm-4 control-label">Minimum</label>
+                                <div class="col-sm-7">
+                                    <input id="txtEditRecordDataSoaMinimum" type="number" class="form-control" style="width: 100px;">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="divAddEditRecordDataMx" style="display: none;">
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataMxPreference" class="col-sm-4 control-label">Preference</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordDataMxPreference" type="number" class="form-control" placeholder="1" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataMxExchange" class="col-sm-4 control-label">Exchange</label>
+                                <div class="col-sm-7">
+                                    <input id="txtAddEditRecordDataMxExchange" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="divAddEditRecordDataSrv" style="display: none;">
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataSrvPriority" class="col-sm-4 control-label">Priority</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="txtAddEditRecordDataSrvPriority" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataSrvWeight" class="col-sm-4 control-label">Weight</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="txtAddEditRecordDataSrvWeight" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataSrvPort" class="col-sm-4 control-label">Port</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="txtAddEditRecordDataSrvPort" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataSrvTarget" class="col-sm-4 control-label">Target</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtAddEditRecordDataSrvTarget">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="divAddEditRecordDataCaa" style="display: none;">
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataCaaFlags" class="col-sm-4 control-label">Flags</label>
+                                <div class="col-sm-7">
+                                    <input type="number" class="form-control" id="txtAddEditRecordDataCaaFlags" placeholder="0" style="width: 100px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataCaaTag" class="col-sm-4 control-label">Tag</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtAddEditRecordDataCaaTag" placeholder="issue" style="width: 150px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAddEditRecordDataCaaValue" class="col-sm-4 control-label">Authority</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtAddEditRecordDataCaaValue">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnAddEditRecord" data-loading-text="Saving...">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div id="modalImportAllowedZones" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import Allowed Zones</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="divImportAllowedZonesAlert"></div>
+
+                    <p>Enter domain names one below other to import into Allowed Zone:</p>
+
+                    <div class="form-group">
+                        <label for="txtImportAllowedZones" class="control-label">Allowed Zones</label>
+                        <textarea id="txtImportAllowedZones" class="form-control" rows="15"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnImportAllowedZones" type="submit" class="btn btn-primary" data-loading-text="Importing..." onclick="return importAllowedZones();">Import</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalImportCustomBlockedZones" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import Custom Blocked Zones</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="divImportCustomBlockedZonesAlert"></div>
+
+                    <p>Enter domain names one below other to import into custom blocked zone:</p>
+
+                    <div class="form-group">
+                        <label for="txtImportCustomBlockedZones" class="control-label">Blocked Zones</label>
+                        <textarea id="txtImportCustomBlockedZones" class="form-control" rows="15"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnImportCustomBlockedZones" type="submit" class="btn btn-primary" data-loading-text="Importing..." onclick="return importCustomBlockedZones();">Import</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>

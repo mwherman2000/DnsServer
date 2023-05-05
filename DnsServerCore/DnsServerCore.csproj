@@ -1,0 +1,165 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="www\blocklist.txt" />
+    <None Remove="www\css\bootstrap-theme.min.css" />
+    <None Remove="www\css\bootstrap-theme.min.css.map" />
+    <None Remove="www\css\bootstrap.min.css" />
+    <None Remove="www\css\bootstrap.min.css.map" />
+    <None Remove="www\css\font-awesome.min.css" />
+    <None Remove="www\css\main.css" />
+    <None Remove="www\favicon.ico" />
+    <None Remove="www\fonts\fontawesome-webfont.eot" />
+    <None Remove="www\fonts\fontawesome-webfont.svg" />
+    <None Remove="www\fonts\fontawesome-webfont.ttf" />
+    <None Remove="www\fonts\fontawesome-webfont.woff" />
+    <None Remove="www\fonts\fontawesome-webfont.woff2" />
+    <None Remove="www\fonts\FontAwesome.otf" />
+    <None Remove="www\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="www\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="www\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="www\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="www\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="www\img\loader.gif" />
+    <None Remove="www\img\logo.png" />
+    <None Remove="www\img\logo25x25.png" />
+    <None Remove="www\index.html" />
+    <None Remove="www\js\bootstrap.min.js" />
+    <None Remove="www\js\Chart.min.js" />
+    <None Remove="www\js\common.js" />
+    <None Remove="www\js\dhcp.js" />
+    <None Remove="www\js\jquery.min.js" />
+    <None Remove="www\js\main.js" />
+    <None Remove="www\js\zone.js" />
+    <None Remove="www\robots.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="www\blocklist.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\bootstrap-theme.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\bootstrap-theme.min.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\bootstrap.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\bootstrap.min.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\font-awesome.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\css\main.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\fontawesome-webfont.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\FontAwesome.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\glyphicons-halflings-regular.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\glyphicons-halflings-regular.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\glyphicons-halflings-regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\glyphicons-halflings-regular.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\fonts\glyphicons-halflings-regular.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\img\loader.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\img\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\img\logo25x25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\Chart.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\common.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\jquery.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\js\zone.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\robots.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="www\js\dhcp.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\TechnitiumLibrary\TechnitiumLibrary.IO\TechnitiumLibrary.IO.csproj" />
+    <ProjectReference Include="..\..\TechnitiumLibrary\TechnitiumLibrary.Net\TechnitiumLibrary.Net.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Authors>Shreyas Zare</Authors>
+    <Company>Technitium</Company>
+    <Product>Technitium DNS Server</Product>
+    <PackageProjectUrl>https://technitium.com/dns/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TechnitiumSoftware/DnsServer</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <Description>.NET Standard 2.0</Description>
+    <PackageId>DnsServer</PackageId>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+    <Version>4.0</Version>
+  </PropertyGroup>
+
+</Project>

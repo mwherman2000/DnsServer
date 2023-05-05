@@ -1,0 +1,143 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsService", "DnsService\DnsService.csproj", "{7873B2B8-01BA-48BC-B4B0-0857FFD873C9}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DnsServiceSetup", "DnsServiceSetup\DnsServiceSetup.vdproj", "{7A6C95A1-FBB7-43CD-9AF5-87CD05DF7CDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnsServerCore", "DnsServerCore\DnsServerCore.csproj", "{4494B79B-588C-41F2-95AD-0897123AF154}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsServerApp", "DnsServerApp\DnsServerApp.csproj", "{C166A19B-B533-45F8-813F-861DAB6D1865}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnsServerApp.NETCore", "DnsServerApp.NETCore\DnsServerApp.NETCore.csproj", "{ADE80805-9FA7-4F66-8A18-57B98F8C0B0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsServerSystemTrayApp", "DnsServerSystemTrayApp\DnsServerSystemTrayApp.csproj", "{2F91BD07-2CEE-47FA-8486-457B54612B4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.BTree", "..\TechnitiumLibrary\TechnitiumLibrary.BTree\TechnitiumLibrary.BTree.csproj", "{03816AB5-4537-4365-8946-E8972EC7906F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.Database", "..\TechnitiumLibrary\TechnitiumLibrary.Database\TechnitiumLibrary.Database.csproj", "{01B4AF8A-DF03-40F7-9B5D-438C649B2B1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.Database.WebDatabase", "..\TechnitiumLibrary\TechnitiumLibrary.Database.WebDatabase\TechnitiumLibrary.Database.WebDatabase.csproj", "{128148A3-2EAB-4368-9D2F-FAC5D6BC6DBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.Database.WebDatabase.Server", "..\TechnitiumLibrary\TechnitiumLibrary.Database.WebDatabase.Server\TechnitiumLibrary.Database.WebDatabase.Server.csproj", "{FEE7A5E9-57EC-4C70-B48D-1F4158C508B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.IO", "..\TechnitiumLibrary\TechnitiumLibrary.IO\TechnitiumLibrary.IO.csproj", "{F370574A-AC13-4CA1-BDE9-BDE1C41C4B91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Net", "..\TechnitiumLibrary\TechnitiumLibrary.Net\TechnitiumLibrary.Net.csproj", "{3BB8D65B-58BF-4670-97A6-1846DC0C1956}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Net.BitTorrent", "..\TechnitiumLibrary\TechnitiumLibrary.Net.BitTorrent\TechnitiumLibrary.Net.BitTorrent.csproj", "{3AF11ACF-F8DD-4A68-8B5D-E295F3410051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.Net.Firewall", "..\TechnitiumLibrary\TechnitiumLibrary.Net.Firewall\TechnitiumLibrary.Net.Firewall.csproj", "{A5E9FCC4-3532-4F48-B3C1-C646F398FD8E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Net.Mail", "..\TechnitiumLibrary\TechnitiumLibrary.Net.Mail\TechnitiumLibrary.Net.Mail.csproj", "{64CE26E5-ED68-45B0-A1AD-B175A63273DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Net.Tor", "..\TechnitiumLibrary\TechnitiumLibrary.Net.Tor\TechnitiumLibrary.Net.Tor.csproj", "{74C383CF-8004-46A4-9E05-4D61EAC2C713}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Net.UPnP", "..\TechnitiumLibrary\TechnitiumLibrary.Net.UPnP\TechnitiumLibrary.Net.UPnP.csproj", "{FDAEC788-CABC-48E9-944E-596740B8D276}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnitiumLibrary.Security.Cryptography", "..\TechnitiumLibrary\TechnitiumLibrary.Security.Cryptography\TechnitiumLibrary.Security.Cryptography.csproj", "{1F1CB3D0-02F0-4D09-9FE3-E6FD9438792A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechnitiumLibrary.Security.Cryptography.EllipticCurve", "..\TechnitiumLibrary\TechnitiumLibrary.Security.Cryptography.EllipticCurve\TechnitiumLibrary.Security.Cryptography.EllipticCurve.csproj", "{888D0328-D6F1-4CA8-88A6-F77D59F23CF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95995FF0-6F03-4680-9B94-99D6E3D4BECC}"
+	ProjectSection(SolutionItems) = preProject
+		Readme-AddRR.txt = Readme-AddRR.txt
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDWConsoleApp", "TDWConsoleApp\TDWConsoleApp.csproj", "{C63D2203-E3B4-4AE2-8E55-160C6B122302}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7873B2B8-01BA-48BC-B4B0-0857FFD873C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7873B2B8-01BA-48BC-B4B0-0857FFD873C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7873B2B8-01BA-48BC-B4B0-0857FFD873C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7873B2B8-01BA-48BC-B4B0-0857FFD873C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A6C95A1-FBB7-43CD-9AF5-87CD05DF7CDE}.Debug|Any CPU.ActiveCfg = Debug
+		{7A6C95A1-FBB7-43CD-9AF5-87CD05DF7CDE}.Release|Any CPU.ActiveCfg = Release
+		{4494B79B-588C-41F2-95AD-0897123AF154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4494B79B-588C-41F2-95AD-0897123AF154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4494B79B-588C-41F2-95AD-0897123AF154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4494B79B-588C-41F2-95AD-0897123AF154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C166A19B-B533-45F8-813F-861DAB6D1865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C166A19B-B533-45F8-813F-861DAB6D1865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C166A19B-B533-45F8-813F-861DAB6D1865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C166A19B-B533-45F8-813F-861DAB6D1865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE80805-9FA7-4F66-8A18-57B98F8C0B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE80805-9FA7-4F66-8A18-57B98F8C0B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE80805-9FA7-4F66-8A18-57B98F8C0B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE80805-9FA7-4F66-8A18-57B98F8C0B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F91BD07-2CEE-47FA-8486-457B54612B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F91BD07-2CEE-47FA-8486-457B54612B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F91BD07-2CEE-47FA-8486-457B54612B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F91BD07-2CEE-47FA-8486-457B54612B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03816AB5-4537-4365-8946-E8972EC7906F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03816AB5-4537-4365-8946-E8972EC7906F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03816AB5-4537-4365-8946-E8972EC7906F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03816AB5-4537-4365-8946-E8972EC7906F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B4AF8A-DF03-40F7-9B5D-438C649B2B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B4AF8A-DF03-40F7-9B5D-438C649B2B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B4AF8A-DF03-40F7-9B5D-438C649B2B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B4AF8A-DF03-40F7-9B5D-438C649B2B1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{128148A3-2EAB-4368-9D2F-FAC5D6BC6DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{128148A3-2EAB-4368-9D2F-FAC5D6BC6DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{128148A3-2EAB-4368-9D2F-FAC5D6BC6DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{128148A3-2EAB-4368-9D2F-FAC5D6BC6DBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE7A5E9-57EC-4C70-B48D-1F4158C508B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE7A5E9-57EC-4C70-B48D-1F4158C508B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE7A5E9-57EC-4C70-B48D-1F4158C508B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE7A5E9-57EC-4C70-B48D-1F4158C508B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F370574A-AC13-4CA1-BDE9-BDE1C41C4B91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F370574A-AC13-4CA1-BDE9-BDE1C41C4B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F370574A-AC13-4CA1-BDE9-BDE1C41C4B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F370574A-AC13-4CA1-BDE9-BDE1C41C4B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB8D65B-58BF-4670-97A6-1846DC0C1956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB8D65B-58BF-4670-97A6-1846DC0C1956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB8D65B-58BF-4670-97A6-1846DC0C1956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB8D65B-58BF-4670-97A6-1846DC0C1956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF11ACF-F8DD-4A68-8B5D-E295F3410051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF11ACF-F8DD-4A68-8B5D-E295F3410051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF11ACF-F8DD-4A68-8B5D-E295F3410051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF11ACF-F8DD-4A68-8B5D-E295F3410051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E9FCC4-3532-4F48-B3C1-C646F398FD8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E9FCC4-3532-4F48-B3C1-C646F398FD8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E9FCC4-3532-4F48-B3C1-C646F398FD8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E9FCC4-3532-4F48-B3C1-C646F398FD8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64CE26E5-ED68-45B0-A1AD-B175A63273DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64CE26E5-ED68-45B0-A1AD-B175A63273DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64CE26E5-ED68-45B0-A1AD-B175A63273DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64CE26E5-ED68-45B0-A1AD-B175A63273DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C383CF-8004-46A4-9E05-4D61EAC2C713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C383CF-8004-46A4-9E05-4D61EAC2C713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C383CF-8004-46A4-9E05-4D61EAC2C713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C383CF-8004-46A4-9E05-4D61EAC2C713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDAEC788-CABC-48E9-944E-596740B8D276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDAEC788-CABC-48E9-944E-596740B8D276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDAEC788-CABC-48E9-944E-596740B8D276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDAEC788-CABC-48E9-944E-596740B8D276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F1CB3D0-02F0-4D09-9FE3-E6FD9438792A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1CB3D0-02F0-4D09-9FE3-E6FD9438792A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1CB3D0-02F0-4D09-9FE3-E6FD9438792A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1CB3D0-02F0-4D09-9FE3-E6FD9438792A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{888D0328-D6F1-4CA8-88A6-F77D59F23CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{888D0328-D6F1-4CA8-88A6-F77D59F23CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{888D0328-D6F1-4CA8-88A6-F77D59F23CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{888D0328-D6F1-4CA8-88A6-F77D59F23CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63D2203-E3B4-4AE2-8E55-160C6B122302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63D2203-E3B4-4AE2-8E55-160C6B122302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63D2203-E3B4-4AE2-8E55-160C6B122302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63D2203-E3B4-4AE2-8E55-160C6B122302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6747BB6D-2826-4356-A213-805FBCCF9201}
+	EndGlobalSection
+EndGlobal
